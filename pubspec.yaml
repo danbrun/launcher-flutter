@@ -23,6 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  convex_bottom_bar: ^3.0.0
+  device_apps: ^2.0.0
+  provider: ^5.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
