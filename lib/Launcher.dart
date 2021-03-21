@@ -3,57 +3,53 @@ import 'package:flutter/material.dart';
 import 'package:launcher/AppGrid.dart';
 import 'package:launcher/AppList.dart';
 
-class Launcher extends StatefulWidget {
+class Launcher extends StatelessWidget {
+  static const List<Widget> _tabViews = <Widget>[
+    const AppGrid(),
+    const AppList(),
+  ];
+
+  static const List<TabItem> _tabItems = <TabItem>[
+    TabItem(
+      icon: Icon(
+        Icons.grid_view,
+        color: Colors.white,
+      ),
+      title: 'Grid',
+    ),
+    TabItem(
+      icon: Icon(
+        Icons.view_list,
+        color: Colors.white,
+      ),
+      title: 'List',
+    ),
+  ];
+
   const Launcher({Key key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => LauncherState();
-}
-
-class LauncherState extends State<Launcher> {
-  static const List<Widget> _tabs = <Widget>[
-    AppGrid(),
-    AppList(),
-  ];
-
-  int _index = 0;
-
-  void _onTap(int index) {
-    setState(() {
-      _index = index;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: _tabs.elementAt(_index),
-      bottomNavigationBar: ConvexAppBar(
-        items: [
-          TabItem(
-            icon: Icon(
-              Icons.grid_view,
-              color: Colors.white,
+    return DefaultTabController(
+      length: _tabViews.length,
+      child: Builder(
+        builder: (BuildContext context) {
+          return Scaffold(
+            backgroundColor: Colors.transparent,
+            body: TabBarView(
+              children: _tabViews,
             ),
-            title: 'Grid',
-          ),
-          TabItem(
-            icon: Icon(
-              Icons.view_list,
+            bottomNavigationBar: ConvexAppBar(
+              items: _tabItems,
               color: Colors.white,
+              backgroundColor: Colors.grey[850],
+              curveSize: 96,
+              top: -16,
+              style: TabStyle.react,
             ),
-            title: 'List',
-          ),
-        ],
-        initialActiveIndex: 0,
-        onTap: _onTap,
-        style: TabStyle.react,
-        color: Colors.white,
-        backgroundColor: Colors.grey[850],
-        top: -16,
-        curveSize: 96,
-      ),
+          );
+        },
+      )
     );
   }
 }
