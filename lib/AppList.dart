@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:launcher/DeviceAppsModel.dart';
@@ -11,13 +13,18 @@ class AppList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<DeviceAppsModel, LauncherSettingsModel>(
       builder: (context, deviceAppsModel, launcherSettingsModel, child) {
+        int appCount = deviceAppsModel.apps.length;
+        int columnCount = launcherSettingsModel.listColumns;
+        int rowCount = (appCount / columnCount).ceil();
+
         return ListView.separated(
-          itemBuilder: (context, index) => AppListItem(
-            deviceAppsModel.apps[index] as ApplicationWithIcon,
+          itemBuilder: (context, index) => AppListRow(
+            deviceAppsModel.apps.sublist(index * columnCount, min((index + 1)* columnCount, appCount)),
             launcherSettingsModel.iconSize,
-            launcherSettingsModel.itemPadding
+            launcherSettingsModel.listColumns,
+            launcherSettingsModel.itemPadding,
           ),
-          itemCount: deviceAppsModel.apps.length,
+          itemCount: rowCount,
           separatorBuilder: (context, index) => SizedBox(
             height: launcherSettingsModel.itemSpacing.toDouble()
           ),
@@ -29,16 +36,29 @@ class AppList extends StatelessWidget {
 }
 
 class AppListRow extends StatelessWidget {
-  final ApplicationWithIcon _app;
+  final List<Application> _apps;
   final int _iconSize;
+  final int _listColumns;
   final int _itemPadding;
 
-  AppListRow(this._app, this._iconSize, this._itemPadding);
+  AppListRow(this._apps, this._iconSize, this._listColumns, this._itemPadding);
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> appListItems = this._apps.map((app) => Expanded(
+      child: AppListItem(
+        app,
+        _iconSize,
+        _itemPadding,
+      )
+    )).toList();
+
+    while (appListItems.length < _listColumns) {
+      appListItems.add(Expanded(child: Container()));
+    }
+
     return Row(
-      children: [],
+      children: appListItems,
     );
   }
 }
@@ -65,7 +85,12 @@ class AppListItem extends StatelessWidget {
             ),
             padding: EdgeInsets.all(_itemPadding.toDouble()),
           ),
-          Text(_app.appName),
+          Flexible(
+            child: Text(
+              _app.appName,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       ),
       style: ButtonStyle(
