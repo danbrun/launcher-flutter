@@ -18,8 +18,9 @@ class AppGrid extends StatelessWidget {
             crossAxisSpacing: launcherSettingsModel.itemSpacing.toDouble(),
           ),
           itemBuilder: (context, index) => AppGridItem(
-            deviceAppsModel.apps[index] as ApplicationWithIcon,
-            launcherSettingsModel.iconSize
+            deviceAppsModel.apps[index],
+            deviceAppsModel.icons[index],
+            launcherSettingsModel.iconSize,
           ),
           itemCount: deviceAppsModel.apps.length,
           padding: MediaQuery.of(context).viewPadding + EdgeInsets.only(bottom: 16),
@@ -30,24 +31,24 @@ class AppGrid extends StatelessWidget {
 }
 
 class AppGridItem extends StatelessWidget {
-  final ApplicationWithIcon _app;
+  final Application _app;
+  final MemoryImage _icon;
   final int _iconSize;
 
-  AppGridItem(this._app, this._iconSize);
+  AppGridItem(this._app, this._icon, this._iconSize);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () => _app.openApp(),
-      child: Image.memory(
-        _app.icon,
+      child: Image(
+        image: _icon,
         width: _iconSize.toDouble(),
         height: _iconSize.toDouble(),
-        alignment: Alignment.center,
       ),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Colors.transparent),
-        alignment: Alignment.topLeft,
+        alignment: Alignment.center,
         padding: MaterialStateProperty.all(EdgeInsets.all(16)),
       ),
     );

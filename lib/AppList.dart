@@ -18,12 +18,18 @@ class AppList extends StatelessWidget {
         int rowCount = (appCount / columnCount).ceil();
 
         return ListView.separated(
-          itemBuilder: (context, index) => AppListRow(
-            deviceAppsModel.apps.sublist(index * columnCount, min((index + 1)* columnCount, appCount)),
-            launcherSettingsModel.iconSize,
-            launcherSettingsModel.listColumns,
-            launcherSettingsModel.itemPadding,
-          ),
+          itemBuilder: (context, index) {
+            int start = index * columnCount;
+            int end = min(start + columnCount, appCount);
+
+            return AppListRow(
+              deviceAppsModel.apps.sublist(start, end),
+              deviceAppsModel.icons.sublist(start, end),
+              launcherSettingsModel.iconSize,
+              launcherSettingsModel.listColumns,
+              launcherSettingsModel.itemPadding,
+            );
+          },
           itemCount: rowCount,
           separatorBuilder: (context, index) => SizedBox(
             height: launcherSettingsModel.itemSpacing.toDouble()
@@ -37,24 +43,31 @@ class AppList extends StatelessWidget {
 
 class AppListRow extends StatelessWidget {
   final List<Application> _apps;
+  final List<MemoryImage> _icons;
   final int _iconSize;
   final int _listColumns;
   final int _itemPadding;
 
-  AppListRow(this._apps, this._iconSize, this._listColumns, this._itemPadding);
+  AppListRow(this._apps, this._icons, this._iconSize, this._listColumns, this._itemPadding);
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> appListItems = this._apps.map((app) => Expanded(
-      child: AppListItem(
-        app,
-        _iconSize,
-        _itemPadding,
-      )
-    )).toList();
+    List<Widget> appListItems = [];
+
+    for (int index = 0; index < _apps.length; index++) {
+      appListItems.add(
+        Expanded(
+          child: AppListItem(_apps[index], _icons[index], _iconSize, _itemPadding)
+        ),
+      );
+    }
 
     while (appListItems.length < _listColumns) {
-      appListItems.add(Expanded(child: Container()));
+      appListItems.add(
+        Expanded(
+          child: Container(),
+        ),
+      );
     }
 
     return Row(
@@ -64,11 +77,12 @@ class AppListRow extends StatelessWidget {
 }
 
 class AppListItem extends StatelessWidget {
-  final ApplicationWithIcon _app;
+  final Application _app;
+  final MemoryImage _icon;
   final int _iconSize;
   final int _itemPadding;
 
-  AppListItem(this._app, this._iconSize, this._itemPadding);
+  AppListItem(this._app, this._icon, this._iconSize, this._itemPadding);
 
   @override
   Widget build(BuildContext context) {
@@ -77,11 +91,10 @@ class AppListItem extends StatelessWidget {
       child: Row(
         children: [
           Padding(
-            child: Image.memory(
-              _app.icon,
+            child: Image(
+              image: _icon,
               width: _iconSize.toDouble(),
               height: _iconSize.toDouble(),
-              alignment: Alignment.center,
             ),
             padding: EdgeInsets.all(_itemPadding.toDouble()),
           ),
