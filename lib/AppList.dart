@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:device_apps/device_apps.dart';
 import 'package:launcher/DeviceAppsModel.dart';
 import 'package:launcher/LauncherSettingsModel.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +23,6 @@ class AppList extends StatelessWidget {
 
             return AppListRow(
               deviceAppsModel.apps.sublist(start, end),
-              deviceAppsModel.icons.sublist(start, end),
               launcherSettingsModel.iconSize,
               launcherSettingsModel.listColumns,
               launcherSettingsModel.itemPadding,
@@ -42,13 +40,12 @@ class AppList extends StatelessWidget {
 }
 
 class AppListRow extends StatelessWidget {
-  final List<Application> _apps;
-  final List<MemoryImage> _icons;
+  final List<LauncherApplication> _apps;
   final int _iconSize;
   final int _listColumns;
   final int _itemPadding;
 
-  AppListRow(this._apps, this._icons, this._iconSize, this._listColumns, this._itemPadding);
+  AppListRow(this._apps, this._iconSize, this._listColumns, this._itemPadding);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +54,7 @@ class AppListRow extends StatelessWidget {
     for (int index = 0; index < _apps.length; index++) {
       appListItems.add(
         Expanded(
-          child: AppListItem(_apps[index], _icons[index], _iconSize, _itemPadding)
+          child: AppListItem(_apps[index], _iconSize, _itemPadding)
         ),
       );
     }
@@ -77,23 +74,22 @@ class AppListRow extends StatelessWidget {
 }
 
 class AppListItem extends StatelessWidget {
-  final Application _app;
-  final MemoryImage _icon;
+  final LauncherApplication _app;
   final int _iconSize;
   final int _itemPadding;
 
-  AppListItem(this._app, this._icon, this._iconSize, this._itemPadding);
+  AppListItem(this._app, this._iconSize, this._itemPadding);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => _app.openApp(),
-      onDoubleTap: () => _app.openSettingsScreen(),
+      onDoubleTap: () => _app.openSettings(),
       child: Row(
         children: [
           Padding(
             child: Image(
-              image: _icon,
+              image: _app.icon,
               width: _iconSize.toDouble(),
               height: _iconSize.toDouble(),
             ),
@@ -101,7 +97,7 @@ class AppListItem extends StatelessWidget {
           ),
           Flexible(
             child: Text(
-              _app.appName,
+              _app.name,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.white,
