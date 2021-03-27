@@ -86,8 +86,9 @@ class AppListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => _app.openApp(),
+    return InkWell(
+      onTap: () => _app.openApp(),
+      onDoubleTap: () => _app.openSettingsScreen(),
       child: Row(
         children: [
           Padding(
@@ -102,14 +103,12 @@ class AppListItem extends StatelessWidget {
             child: Text(
               _app.appName,
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
           ),
         ],
-      ),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.transparent),
-        alignment: Alignment.topLeft,
-        padding: MaterialStateProperty.all(EdgeInsets.all(0)),
       ),
     );
   }

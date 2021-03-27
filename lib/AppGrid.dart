@@ -39,17 +39,15 @@ class AppGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => _app.openApp(),
-      child: Image(
-        image: _icon,
-        width: _iconSize.toDouble(),
-        height: _iconSize.toDouble(),
-      ),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.transparent),
-        alignment: Alignment.center,
-        padding: MaterialStateProperty.all(EdgeInsets.all(16)),
+    return InkWell(
+      onTap: () => _app.openApp(),
+      onDoubleTap: () => _app.openSettingsScreen(),
+      child: Center(
+        child: Image(
+          image: _icon,
+          width: _iconSize.toDouble(),
+          height: _iconSize.toDouble(),
+        ),
       ),
     );
   }
