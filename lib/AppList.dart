@@ -7,7 +7,7 @@ import 'package:launcher/LauncherSettingsModel.dart';
 import 'package:provider/provider.dart';
 
 class AppList extends StatelessWidget {
-  const AppList({Key key}) : super(key: key);
+  const AppList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

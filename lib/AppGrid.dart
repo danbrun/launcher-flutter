@@ -5,7 +5,7 @@ import 'package:launcher/LauncherSettingsModel.dart';
 import 'package:provider/provider.dart';
 
 class AppGrid extends StatelessWidget {
-  const AppGrid({Key key}) : super(key: key);
+  const AppGrid({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
