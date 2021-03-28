@@ -19,7 +19,7 @@ class AppList extends StatelessWidget {
           ),
           itemCount: deviceAppsModel.apps.length,
           columns: launcherSettingsModel.listColumns,
-          spacing: launcherSettingsModel.itemSpacing.toDouble(),
+          spacing: launcherSettingsModel.itemSpacing,
           padding: MediaQuery.of(context).viewPadding + EdgeInsets.only(bottom: 16),
         );
       },
@@ -29,8 +29,8 @@ class AppList extends StatelessWidget {
 
 class AppListItem extends StatelessWidget {
   final LauncherApplication _app;
-  final int _iconSize;
-  final int _itemPadding;
+  final double _iconSize;
+  final double _itemPadding;
 
   AppListItem(this._app, this._iconSize, this._itemPadding);
 
@@ -44,10 +44,10 @@ class AppListItem extends StatelessWidget {
           Padding(
             child: Image(
               image: _app.icon,
-              width: _iconSize.toDouble(),
-              height: _iconSize.toDouble(),
+              width: _iconSize,
+              height: _iconSize,
             ),
-            padding: EdgeInsets.all(_itemPadding.toDouble()),
+            padding: EdgeInsets.all(_itemPadding),
           ),
           Flexible(
             child: Text(

@@ -2,11 +2,13 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:launcher/AppGrid.dart';
 import 'package:launcher/AppList.dart';
+import 'package:launcher/Settings.dart';
 
 class Launcher extends StatelessWidget {
   static const List<Widget> _tabViews = <Widget>[
     const AppGrid(),
     const AppList(),
+    const Settings(),
   ];
 
   static const List<TabItem> _tabItems = <TabItem>[
@@ -23,6 +25,13 @@ class Launcher extends StatelessWidget {
         color: Colors.white,
       ),
       title: 'List',
+    ),
+    TabItem(
+      icon: Icon(
+        Icons.settings,
+        color: Colors.white,
+      ),
+      title: 'Settings',
     ),
   ];
 

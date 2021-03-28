@@ -13,8 +13,8 @@ class AppGrid extends StatelessWidget {
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: launcherSettingsModel.gridColumns,
-            mainAxisSpacing: launcherSettingsModel.itemSpacing.toDouble(),
-            crossAxisSpacing: launcherSettingsModel.itemSpacing.toDouble(),
+            mainAxisSpacing: launcherSettingsModel.itemSpacing,
+            crossAxisSpacing: launcherSettingsModel.itemSpacing,
           ),
           itemBuilder: (context, index) => AppGridItem(
             deviceAppsModel.apps[index],
@@ -30,7 +30,7 @@ class AppGrid extends StatelessWidget {
 
 class AppGridItem extends StatelessWidget {
   final LauncherApplication _app;
-  final int _iconSize;
+  final double _iconSize;
 
   AppGridItem(this._app, this._iconSize);
 
@@ -42,8 +42,8 @@ class AppGridItem extends StatelessWidget {
       child: Center(
         child: Image(
           image: _app.icon,
-          width: _iconSize.toDouble(),
-          height: _iconSize.toDouble(),
+          width: _iconSize,
+          height: _iconSize,
         ),
       ),
     );
