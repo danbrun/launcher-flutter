@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:launcher/DeviceAppsModel.dart';
+import 'package:launcher/FlexHeightGrid.dart';
 import 'package:launcher/LauncherSettingsModel.dart';
 import 'package:provider/provider.dart';
 
@@ -12,63 +11,18 @@ class AppList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<DeviceAppsModel, LauncherSettingsModel>(
       builder: (context, deviceAppsModel, launcherSettingsModel, child) {
-        int appCount = deviceAppsModel.apps.length;
-        int columnCount = launcherSettingsModel.listColumns;
-        int rowCount = (appCount / columnCount).ceil();
-
-        return ListView.separated(
-          itemBuilder: (context, index) {
-            int start = index * columnCount;
-            int end = min(start + columnCount, appCount);
-
-            return AppListRow(
-              deviceAppsModel.apps.sublist(start, end),
-              launcherSettingsModel.iconSize,
-              launcherSettingsModel.listColumns,
-              launcherSettingsModel.itemPadding,
-            );
-          },
-          itemCount: rowCount,
-          separatorBuilder: (context, index) => SizedBox(
-            height: launcherSettingsModel.itemSpacing.toDouble()
+        return FlexHeightGrid(
+          itemBuilder: (builder, index) => AppListItem(
+            deviceAppsModel.apps[index],
+            launcherSettingsModel.iconSize,
+            launcherSettingsModel.itemPadding,
           ),
+          itemCount: deviceAppsModel.apps.length,
+          columns: launcherSettingsModel.listColumns,
+          spacing: launcherSettingsModel.itemSpacing.toDouble(),
           padding: MediaQuery.of(context).viewPadding + EdgeInsets.only(bottom: 16),
         );
       },
-    );
-  }
-}
-
-class AppListRow extends StatelessWidget {
-  final List<LauncherApplication> _apps;
-  final int _iconSize;
-  final int _listColumns;
-  final int _itemPadding;
-
-  AppListRow(this._apps, this._iconSize, this._listColumns, this._itemPadding);
-
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> appListItems = [];
-
-    for (int index = 0; index < _apps.length; index++) {
-      appListItems.add(
-        Expanded(
-          child: AppListItem(_apps[index], _iconSize, _itemPadding)
-        ),
-      );
-    }
-
-    while (appListItems.length < _listColumns) {
-      appListItems.add(
-        Expanded(
-          child: Container(),
-        ),
-      );
-    }
-
-    return Row(
-      children: appListItems,
     );
   }
 }
