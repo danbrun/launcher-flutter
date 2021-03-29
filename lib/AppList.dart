@@ -19,7 +19,6 @@ class AppList extends StatelessWidget {
           ),
           itemCount: deviceAppsModel.apps.length,
           columns: launcherSettingsModel.listColumns,
-          spacing: launcherSettingsModel.itemSpacing,
           padding: MediaQuery.of(context).viewPadding + EdgeInsets.only(bottom: 16),
         );
       },
