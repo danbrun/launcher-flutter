@@ -12,45 +12,45 @@ class Settings extends StatelessWidget {
       builder: (context, launcherSettingsModel, child) {
         return ListView(
           children: [
-            Slider(
-              value: launcherSettingsModel.iconSize,
-              label: launcherSettingsModel.iconSize.toString(),
-              onChanged: (iconSize) => launcherSettingsModel.setIconSize(iconSize),
-              min: 16,
-              max: 128,
-              divisions: 14,
+            Card(
+              child: ListTile(
+                title: Text('Icon size'),
+                subtitle: Slider(
+                  value: launcherSettingsModel.iconSize,
+                  label: launcherSettingsModel.iconSize.toString(),
+                  onChanged: (iconSize) => launcherSettingsModel.setIconSize(iconSize),
+                  min: 16,
+                  max: 128,
+                  divisions: 14,
+                ),
+                isThreeLine: true,
+              ),
             ),
-            Slider(
-              value: launcherSettingsModel.itemSpacing,
-              label: launcherSettingsModel.itemSpacing.toString(),
-              onChanged: (itemSpacing) => launcherSettingsModel.setItemSpacing(itemSpacing),
-              min: 0,
-              max: 128,
-              divisions: 16,
+            Card(
+              child: ListTile(
+                title: Text('Padding'),
+                subtitle: Slider(
+                  value: launcherSettingsModel.itemPadding,
+                  label: launcherSettingsModel.itemPadding.toString(),
+                  onChanged: (itemPadding) => launcherSettingsModel.setItemPadding(itemPadding),
+                  min: 0,
+                  max: 32,
+                  divisions: 8,
+                ),
+              ),
             ),
-            Slider(
-              value: launcherSettingsModel.itemPadding,
-              label: launcherSettingsModel.itemPadding.toString(),
-              onChanged: (itemPadding) => launcherSettingsModel.setItemPadding(itemPadding),
-              min: 0,
-              max: 128,
-              divisions: 16,
-            ),
-            Slider(
-              value: launcherSettingsModel.gridColumns.toDouble(),
-              label: launcherSettingsModel.gridColumns.toString(),
-              onChanged: (gridColumns) => launcherSettingsModel.setGridColumns(gridColumns.toInt()),
-              min: 1,
-              max: 10,
-              divisions: 9,
-            ),
-            Slider(
-              value: launcherSettingsModel.listColumns.toDouble(),
-              label: launcherSettingsModel.listColumns.toString(),
-              onChanged: (listColumns) => launcherSettingsModel.setListColumns(listColumns.toInt()),
-              min: 1,
-              max: 10,
-              divisions: 9,
+            Card(
+              child: ListTile(
+                title: Text('Columns'),
+                subtitle: Slider(
+                  value: launcherSettingsModel.listColumns.toDouble(),
+                  label: launcherSettingsModel.listColumns.toString(),
+                  onChanged: (listColumns) => launcherSettingsModel.setListColumns(listColumns.toInt()),
+                  min: 1,
+                  max: 3,
+                  divisions: 2,
+                ),
+              ),
             ),
           ],
         );
