@@ -38,26 +38,29 @@ class AppListItem extends StatelessWidget {
     return InkWell(
       onTap: () => _app.openApp(),
       onDoubleTap: () => _app.openSettings(),
-      child: Row(
-        children: [
-          Padding(
-            child: Image(
-              image: _app.icon,
-              width: _iconSize,
-              height: _iconSize,
+      child: Padding(
+        child: Row(
+          children: [
+            Padding(
+              child: Image(
+                image: _app.icon,
+                width: _iconSize,
+                height: _iconSize,
+              ),
+              padding: EdgeInsets.only(right: _itemPadding),
             ),
-            padding: EdgeInsets.all(_itemPadding),
-          ),
-          Flexible(
-            child: Text(
-              _app.name,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.white,
+            Flexible(
+              child: Text(
+                _app.name,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+        padding: EdgeInsets.all(_itemPadding),
       ),
     );
   }
