@@ -2,10 +2,21 @@ import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 
 class DeviceAppsModel extends ChangeNotifier {
+  static final List<ApplicationEventType> _removeEvents = [
+    ApplicationEventType.disabled,
+    ApplicationEventType.uninstalled,
+    ApplicationEventType.updated,
+  ];
+  static final List<ApplicationEventType> _addEvents = [
+    ApplicationEventType.enabled,
+    ApplicationEventType.installed,
+    ApplicationEventType.updated,
+  ];
   final List<LauncherApplication> apps = [];
 
   DeviceAppsModel() {
     _setup();
+    _listen();
   }
 
   void _setup() {
@@ -17,10 +28,44 @@ class DeviceAppsModel extends ChangeNotifier {
       )
       .then(
         (apps) {
+          _clear();
           _addAll(apps);
           _update();
         }
       );
+  }
+
+  void _listen() {
+    DeviceApps
+      .listenToAppsChanges()
+      .listen((event) {
+        if (_removeEvents.contains(event.event)) {
+          _uninstall(event.packageName);
+        }
+        if (_addEvents.contains(event.event)) {
+          _install(event.packageName);
+        }
+      });
+  }
+
+  void _clear() {
+    apps.clear();
+  }
+
+  void _uninstall(String package) {
+    apps.removeWhere((app) => app.package == package);
+    _update();
+  }
+
+  void _install(String package) {
+    DeviceApps
+      .getApp(package)
+      .then((app) {
+        if (app != null) {
+          _add(app);
+          _update();
+        }
+      });
   }
 
   void _addAll(List<Application> apps) {
