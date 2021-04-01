@@ -5,10 +5,14 @@ class LauncherSettingsModel extends ChangeNotifier {
   double _iconSize = 32;
   double _itemPadding = 8;
   int _listColumns = 3;
+  bool _rightLabels = true;
+  int _fontSize = 12;
 
   double get iconSize => _iconSize;
   double get itemPadding => _itemPadding;
   int get listColumns => _listColumns;
+  bool get rightLabels => _rightLabels;
+  int get fontSize => _fontSize;
 
   SharedPreferences? _preferences;
 
@@ -20,6 +24,8 @@ class LauncherSettingsModel extends ChangeNotifier {
         _iconSize = preferences.getDouble('iconSize') ?? _iconSize;
         _itemPadding = preferences.getDouble('itemPadding') ?? _itemPadding;
         _listColumns = preferences.getInt('listColumns') ?? _listColumns;
+        _rightLabels = preferences.getBool('rightLabels') ?? _rightLabels;
+        _fontSize = preferences.getInt('fontSize') ?? _fontSize;
         notifyListeners();
       });
   }
@@ -39,6 +45,18 @@ class LauncherSettingsModel extends ChangeNotifier {
   void setListColumns(int listColumns) {
     _listColumns = listColumns;
     _preferences?.setInt('listColumns', _listColumns);
+    notifyListeners();
+  }
+
+  void setRightLabels(bool rightLabels) {
+    _rightLabels = rightLabels;
+    _preferences?.setBool('rightLabels', rightLabels);
+    notifyListeners();
+  }
+
+  void setFontSize(int fontSize) {
+    _fontSize = fontSize;
+    _preferences?.setInt('fontSize', fontSize);
     notifyListeners();
   }
 }

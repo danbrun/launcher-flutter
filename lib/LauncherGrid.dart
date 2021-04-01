@@ -12,6 +12,10 @@ class LauncherGrid extends StatelessWidget {
       builder: (context, deviceAppsModel, launcherSettingsModel, child) {
         double itemWidth = MediaQuery.of(context).size.width / launcherSettingsModel.listColumns;
         double itemHeight = launcherSettingsModel.iconSize + 2 * launcherSettingsModel.itemPadding;
+        if (!launcherSettingsModel.rightLabels) {
+          itemHeight += launcherSettingsModel.fontSize + launcherSettingsModel.itemPadding;
+        }
+
         return GridView.builder(
           itemBuilder: (builder, index) => LauncherItem(deviceAppsModel.apps[index]),
           itemCount: deviceAppsModel.apps.length,
@@ -35,31 +39,37 @@ class LauncherItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<LauncherSettingsModel>(
       builder: (context, launcherSettingsModel, child) {
+        EdgeInsets iconPadding = launcherSettingsModel.rightLabels
+          ? EdgeInsets.only(right: launcherSettingsModel.itemPadding)
+          : EdgeInsets.only(bottom: launcherSettingsModel.itemPadding);
+
+        List<Widget> children = [
+          Padding(
+            child: Image(
+              image: _app.icon,
+              width: launcherSettingsModel.iconSize,
+              height: launcherSettingsModel.iconSize,
+            ),
+            padding: iconPadding,
+          ),
+          Flexible(
+            child: Text(
+              _app.name,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: launcherSettingsModel.fontSize.toDouble(),
+              ),
+              textAlign: launcherSettingsModel.rightLabels ? TextAlign.left : TextAlign.center,
+            ),
+          ),
+        ];
+
         return InkWell(
           onTap: () => _app.openApp(),
           onDoubleTap: () => _app.openSettings(),
           child: Padding(
-            child: Row(
-              children: [
-                Padding(
-                  child: Image(
-                    image: _app.icon,
-                    width: launcherSettingsModel.iconSize,
-                    height: launcherSettingsModel.iconSize,
-                  ),
-                  padding: EdgeInsets.only(right: launcherSettingsModel.itemPadding),
-                ),
-                Flexible(
-                  child: Text(
-                    _app.name,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: launcherSettingsModel.rightLabels ? Row(children: children) : Column(children: children),
             padding: EdgeInsets.all(launcherSettingsModel.itemPadding),
           ),
         );

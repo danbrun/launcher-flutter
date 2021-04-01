@@ -47,8 +47,17 @@ class Settings extends StatelessWidget {
                   label: launcherSettingsModel.listColumns.toString(),
                   onChanged: (listColumns) => launcherSettingsModel.setListColumns(listColumns.toInt()),
                   min: 1,
-                  max: 3,
-                  divisions: 2,
+                  max: 5,
+                  divisions: 4,
+                ),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: Text('Right Labels'),
+                subtitle: Switch(
+                  value: launcherSettingsModel.rightLabels,
+                  onChanged: (rightLabels) => launcherSettingsModel.setRightLabels(rightLabels),
                 ),
               ),
             ),
