@@ -1,11 +1,11 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:launcher/AppList.dart';
+import 'package:launcher/LauncherGrid.dart';
 import 'package:launcher/Settings.dart';
 
 class Launcher extends StatelessWidget {
   static const List<Widget> _tabViews = <Widget>[
-    const AppList(),
+    const LauncherGrid(),
     const Settings(),
   ];
 

@@ -4,15 +4,15 @@ import 'package:launcher/FlexHeightGrid.dart';
 import 'package:launcher/LauncherSettingsModel.dart';
 import 'package:provider/provider.dart';
 
-class AppList extends StatelessWidget {
-  const AppList({Key? key}) : super(key: key);
+class LauncherGrid extends StatelessWidget {
+  const LauncherGrid({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer2<DeviceAppsModel, LauncherSettingsModel>(
       builder: (context, deviceAppsModel, launcherSettingsModel, child) {
         return FlexHeightGrid(
-          itemBuilder: (builder, index) => AppListItem(
+          itemBuilder: (builder, index) => LauncherItem(
             deviceAppsModel.apps[index],
             launcherSettingsModel.iconSize,
             launcherSettingsModel.itemPadding,
@@ -26,12 +26,12 @@ class AppList extends StatelessWidget {
   }
 }
 
-class AppListItem extends StatelessWidget {
+class LauncherItem extends StatelessWidget {
   final LauncherApplication _app;
   final double _iconSize;
   final double _itemPadding;
 
-  AppListItem(this._app, this._iconSize, this._itemPadding);
+  LauncherItem(this._app, this._iconSize, this._itemPadding);
 
   @override
   Widget build(BuildContext context) {
