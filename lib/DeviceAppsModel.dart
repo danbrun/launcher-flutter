@@ -59,7 +59,7 @@ class DeviceAppsModel extends ChangeNotifier {
 
   void _install(String package) {
     DeviceApps
-      .getApp(package)
+      .getApp(package, true)
       .then((app) {
         if (app != null) {
           _add(app);
