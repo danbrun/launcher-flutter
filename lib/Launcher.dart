@@ -4,12 +4,20 @@ import 'package:launcher/LauncherGrid.dart';
 import 'package:launcher/Settings.dart';
 
 class Launcher extends StatelessWidget {
-  static const List<Widget> _tabViews = <Widget>[
-    const LauncherGrid(),
+  static List<Widget> _tabViews = <Widget>[
+    LauncherGrid(appFilter: (deviceAppsModel) => deviceAppsModel.getPinned()),
+    LauncherGrid(appFilter: (deviceAppsModel) => deviceAppsModel.getVisible()),
     const Settings(),
   ];
 
   static const List<TabItem> _tabItems = <TabItem>[
+    TabItem(
+      icon: Icon(
+        Icons.pin_drop,
+        color: Colors.white,
+      ),
+      title: 'Pinned',
+    ),
     TabItem(
       icon: Icon(
         Icons.grid_view,

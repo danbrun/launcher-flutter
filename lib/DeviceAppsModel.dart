@@ -1,5 +1,6 @@
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DeviceAppsModel extends ChangeNotifier {
   static final List<ApplicationEventType> _removeEvents = [
@@ -12,11 +13,57 @@ class DeviceAppsModel extends ChangeNotifier {
     ApplicationEventType.installed,
     ApplicationEventType.updated,
   ];
-  final List<LauncherApplication> apps = [];
+
+  static final String _hiddenPackagesTag = 'hidden_packages';
+  static final String _pinnedPackagesTag = 'pinned_packages';
+
+  final List<LauncherApplication> _apps = [];
+  final List<String> _pinnedPackages = [];
+  final List<String> _hiddenPackages = [];
+
+  SharedPreferences? _preferences;
 
   DeviceAppsModel() {
     _setup();
     _listen();
+  }
+
+  bool isPinned(LauncherApplication app) => _pinnedPackages.contains(app.package);
+  bool isUnpinned(LauncherApplication app) => !_pinnedPackages.contains(app.package);
+  bool isHidden(LauncherApplication app) => _hiddenPackages.contains(app.package);
+  bool isVisible(LauncherApplication app) => !_hiddenPackages.contains(app.package);
+
+  List<LauncherApplication> getPinned() => _apps.where(isPinned).toList();
+  List<LauncherApplication> getUnpinned() => _apps.where(isUnpinned).toList();
+  List<LauncherApplication> getHidden() => _apps.where(isHidden).toList();
+  List<LauncherApplication> getVisible() => _apps.where(isVisible).toList();
+
+  void setPinned(LauncherApplication app, bool isPinned) {
+    if (isPinned) {
+      _pinnedPackages.add(app.package);
+    } else {
+      _pinnedPackages.remove(app.package);
+    }
+    _preferences?.setStringList(_pinnedPackagesTag, _pinnedPackages);
+    notifyListeners();
+  }
+
+  void togglePinned(LauncherApplication app) {
+    setPinned(app, !isPinned(app));
+  }
+
+  void setHidden(LauncherApplication app, bool isHidden) {
+    if (isHidden) {
+      _hiddenPackages.add(app.package);
+    } else {
+      _hiddenPackages.remove(app.package);
+    }
+    _preferences?.setStringList(_hiddenPackagesTag, _hiddenPackages);
+    notifyListeners();
+  }
+
+  void toggleHidden(LauncherApplication app) {
+    setHidden(app, !isHidden(app));
   }
 
   void _setup() {
@@ -33,6 +80,14 @@ class DeviceAppsModel extends ChangeNotifier {
           _update();
         }
       );
+
+    SharedPreferences
+      .getInstance()
+      .then((preferences) {
+        _preferences = preferences;
+        _pinnedPackages.addAll(_preferences?.getStringList(_pinnedPackagesTag) ?? []);
+        _hiddenPackages.addAll(_preferences?.getStringList(_hiddenPackagesTag) ?? []);
+      });
   }
 
   void _listen() {
@@ -49,11 +104,11 @@ class DeviceAppsModel extends ChangeNotifier {
   }
 
   void _clear() {
-    apps.clear();
+    _apps.clear();
   }
 
   void _uninstall(String package) {
-    apps.removeWhere((app) => app.package == package);
+    _apps.removeWhere((app) => app.package == package);
     _update();
   }
 
@@ -73,11 +128,11 @@ class DeviceAppsModel extends ChangeNotifier {
   }
 
   void _add(Application app) {
-    apps.add(LauncherApplication(app as ApplicationWithIcon));
+    _apps.add(LauncherApplication(app as ApplicationWithIcon));
   }
 
   void _update() {
-    apps.sort();
+    _apps.sort();
     notifyListeners();
   }
 }

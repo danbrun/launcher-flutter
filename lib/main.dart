@@ -9,17 +9,17 @@ void main() => runApp(App());
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Launcher',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => DeviceAppsModel()),
-          ChangeNotifierProvider(create: (context) => LauncherSettingsModel()),
-        ],
-        child: WillPopScope(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => DeviceAppsModel()),
+        ChangeNotifierProvider(create: (context) => LauncherSettingsModel()),
+      ],
+      child: MaterialApp(
+        title: 'Launcher',
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+        ),
+        home: WillPopScope(
           child: Launcher(),
           onWillPop: () => Future.value(false),
         ),
