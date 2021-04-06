@@ -15,9 +15,8 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Launcher',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-        ),
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
         home: WillPopScope(
           child: Launcher(),
           onWillPop: () => Future.value(false),
