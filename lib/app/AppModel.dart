@@ -41,6 +41,7 @@ class AppModel extends ChangeNotifier {
       _pinnedPackages.remove(appInfo.package);
     }
     _preferences?.setStringList(_pinnedPackagesTag, _pinnedPackages.toList());
+    notifyListeners();
   }
 
   void setHidden(AppInfo appInfo, bool isHidden) {
@@ -50,6 +51,7 @@ class AppModel extends ChangeNotifier {
       _hiddenPackages.remove(appInfo.package);
     }
     _preferences?.setStringList(_hiddenPackagesTag, _hiddenPackages.toList());
+    notifyListeners();
   }
 
   void _setup() {
