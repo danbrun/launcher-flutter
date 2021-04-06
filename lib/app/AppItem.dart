@@ -24,10 +24,10 @@ class AppItem extends StatelessWidget {
       height: layout.iconSize.toDouble(),
     );
 
-    if (layout.label == AppLabel.none) {
+    if (layout.labelType == AppLabelType.none) {
       appItem = Center(child: icon);
     } else {
-      bool useRightLabel = layout.label == AppLabel.right;
+      bool useRightLabel = layout.labelType == AppLabelType.right;
 
       List<Widget> children = [
         Padding(
@@ -41,8 +41,8 @@ class AppItem extends StatelessWidget {
             appInfo.name,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: Colors.white,
-              fontSize: layout.textSize.toDouble(),
+              color: layout.labelColor,
+              fontSize: layout.labelSize.toDouble(),
             ),
             textAlign: useRightLabel
               ? TextAlign.left

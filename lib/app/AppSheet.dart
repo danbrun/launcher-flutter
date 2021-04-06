@@ -21,11 +21,16 @@ class AppSheet extends StatelessWidget {
       children: [
         ListTile(
           title: Text(appInfo.name),
+          subtitle: Text('Open app settings'),
           leading: Image(
             image: appInfo.icon,
             width: 24,
             height: 24,
           ),
+          onTap: () {
+            appInfo.openSettings();
+            Navigator.pop(context);
+          },
         ),
         ListTile(
           title: Text(isPinned ? 'Unpin' : 'Pin'),
@@ -40,7 +45,8 @@ class AppSheet extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text(isHidden ? 'Show' : 'Hide'),
+          title: Text(isHidden ? 'Show app' : 'Hide app'),
+          subtitle: Text('You can undo this from launcher settings'),
           leading: Icon(
             isHidden
               ? Icons.visibility
@@ -48,14 +54,6 @@ class AppSheet extends StatelessWidget {
           ),
           onTap: () {
             appModel.toggleHidden(appInfo);
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          title: Text('App settings'),
-          leading: Icon(Icons.settings),
-          onTap: () {
-            appInfo.openSettings();
             Navigator.pop(context);
           },
         ),

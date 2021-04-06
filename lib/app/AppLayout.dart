@@ -1,17 +1,20 @@
+import 'dart:ui';
 
 class AppLayout {
   final int iconSize;
-  final int textSize;
+  final int labelSize;
+  final Color labelColor;
+  final AppLabelType labelType;
   final int columns;
   final int padding;
-  final AppLabel label;
 
   const AppLayout({
     required this.iconSize,
-    required this.textSize,
+    required this.labelSize,
+    required this.labelColor,
+    required this.labelType,
     required this.columns,
     required this.padding,
-    required this.label,
   });
 
   double getItemAspectRatio(double gridWidth) {
@@ -19,7 +22,7 @@ class AppLayout {
   }
 }
 
-enum AppLabel {
+enum AppLabelType {
   right,
   below,
   none,
