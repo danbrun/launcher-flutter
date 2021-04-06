@@ -21,6 +21,8 @@ class AppModel extends ChangeNotifier {
     _listen();
   }
 
+  List<AppInfo> getAll() => _appInfoList;
+
   bool isPinned(AppInfo appInfo) => _pinnedPackages.contains(appInfo.package);
   bool isHidden(AppInfo appInfo) => _hiddenPackages.contains(appInfo.package);
   bool isUnpinned(AppInfo appInfo) => !isUnpinned(appInfo);

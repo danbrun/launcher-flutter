@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:launcher/app/AppGrid.dart';
-import 'package:launcher/app/AppLayout.dart';
 import 'package:launcher/app/AppModel.dart';
 import 'package:provider/provider.dart';
+
+import 'Launcher.dart';
 
 void main() => runApp(App());
 
@@ -23,38 +23,6 @@ class App extends StatelessWidget {
           onWillPop: () => Future.value(false),
         ),
       ),
-    );
-  }
-}
-
-class Launcher extends StatelessWidget {
-  const Launcher({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<AppModel>(
-      builder: (context, appModel, child) {
-        return Scaffold(
-          body: CustomScrollView(
-            slivers: [
-              SliverSafeArea(
-                sliver: AppGrid(
-                  layout: AppLayout(
-                    iconSize: 32,
-                    labelSize: 12,
-                    labelColor: Colors.white,
-                    labelType: AppLabelType.right,
-                    columns: 3,
-                    padding: 8,
-                  ),
-                  appInfoList: appModel.getVisible(),
-                ),
-              ),
-            ],
-          ),
-          backgroundColor: Colors.transparent,
-        );
-      },
     );
   }
 }
