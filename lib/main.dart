@@ -41,10 +41,11 @@ class Launcher extends StatelessWidget {
                 sliver: AppGrid(
                   layout: AppLayout(
                     iconSize: 32,
-                    textSize: 12,
+                    labelSize: 12,
+                    labelColor: Colors.white,
+                    labelType: AppLabelType.right,
                     columns: 3,
                     padding: 8,
-                    label: AppLabel.right,
                   ),
                   appInfoList: appModel.getVisible(),
                 ),
